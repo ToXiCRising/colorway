@@ -71,15 +71,7 @@ namespace Colorway {
         public MainWindow get_window () {
             return win;
         }
-        /*
-        protected override void activate () {
-            if (win != null) {
-                win.present ();
-                return;
-            }
-            win = new MainWindow (this);
-        }
-            */
+
         protected override void activate () {
             if (win != null) {
                 win.present();
@@ -104,24 +96,6 @@ namespace Colorway {
         private static bool start_picker = false;
         public static int main (string[] args) {
 
-            /*
-            try {
-                var opt_context = new OptionContext ("- OptionContext example");
-                opt_context.set_help_enabled (true);
-                opt_context.add_main_entries (options, null);
-                opt_context.parse (ref args);
-            } catch (OptionError e) {
-                printerr ("error: %s\n", e.message);
-                printerr ("Run '%s --help' to see a full list of available command line options.\n", args[0]);
-                return 1;
-            }
-
-
-            if (picker) {
-			    print ("Selected colorpicker\n");
-			    return 0;
-		    }
-            */
             var app = new Colorway.Application ();
             return app.run (args);
         }
