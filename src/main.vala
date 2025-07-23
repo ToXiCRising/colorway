@@ -24,7 +24,7 @@ namespace Colorway {
 
         public Application () {
             Object (
-                flags: ApplicationFlags.FLAGS_NONE,
+                flags: ApplicationFlags.FLAGS_NONE ,
                 application_id: Config.APP_ID
             );
             add_action_entries(app_entries, this);
@@ -51,7 +51,33 @@ namespace Colorway {
             }
             win = new MainWindow (this);
         }
+
+        private const GLib.OptionEntry[] options = {
+            // --version
+            { "color-picker", '\0', OptionFlags.NONE, OptionArg.NONE, ref picker, "Starts program with colorpicker selected", null },
+
+            // list terminator
+            { null }
+        };
+        private static bool picker = false;
         public static int main (string[] args) {
+
+            try {
+                var opt_context = new OptionContext ("- OptionContext example");
+                opt_context.set_help_enabled (true);
+                opt_context.add_main_entries (options, null);
+                opt_context.parse (ref args);
+            } catch (OptionError e) {
+                printerr ("error: %s\n", e.message);
+                printerr ("Run '%s --help' to see a full list of available command line options.\n", args[0]);
+                return 1;
+            }
+
+
+            if (picker) {
+			    print ("Selected colorpicker\n");
+			    return 0;
+		    }
             var app = new Colorway.Application ();
             return app.run (args);
         }
