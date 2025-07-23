@@ -14,11 +14,18 @@ Generate color pairings
 
 <p align="center"><a href='https://flathub.org/apps/details/io.github.lainsce.Colorway'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a></p>
 
+
 ## 💝 Donations 
 
 Would you like to support the development of this app to new heights? Then:
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/lainsce)
+
+## 📟 CLI-Options
+
+|Option | Result
+|-|-|
+|--color-picker | starts with colorpicker selected |
 
 ## 🛠️ Dependencies
 
