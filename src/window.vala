@@ -90,6 +90,7 @@ namespace Colorway {
             app.set_accels_for_action("win.action_export_txt", {"<Ctrl>e"});
             app.set_accels_for_action("win.action_export_png", {"<Shift><Ctrl>e"});
 
+
             weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
             default_theme.add_resource_path ("/io/github/lainsce/Colorway");
 
@@ -304,6 +305,10 @@ namespace Colorway {
             this.set_size_request (275, -1);
 			this.show ();
 		}
+
+        public async void activate_color_picker() {
+            pick_color.begin(); // Directly start picking, skip waiting for user click
+        }
 
 		public async void setup_color_rules (string color, string contrast, double hue, double s, double v, Gtk.ComboBoxText? crd, PaletteButton? sbox, PaletteButton? tbox) {
 		    switch (crd.get_active ()) {

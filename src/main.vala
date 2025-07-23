@@ -24,15 +24,42 @@ namespace Colorway {
 
         public Application () {
             Object (
-                flags: ApplicationFlags.FLAGS_NONE ,
+                flags: ApplicationFlags.HANDLES_COMMAND_LINE ,
                 application_id: Config.APP_ID
             );
             add_action_entries(app_entries, this);
+            this.command_line.connect(on_command_line);
         }
         static construct {
             gsettings = new GLib.Settings ("io.github.lainsce.Colorway");
         }
 
+        private int on_command_line(GLib.ApplicationCommandLine cmdline) {
+            print("Handling command line\n");
+
+            string[] owned_args = cmdline.get_arguments();
+            unowned string[] args = owned_args;
+
+            try {
+                var context = new OptionContext ("- Colorway options");
+                context.set_help_enabled (true);
+                context.add_main_entries (options, null);
+                context.parse(ref args); // This now works
+            } catch (OptionError e) {
+                stderr.printf ("Error parsing options: %s\n", e.message);
+                return 1;
+            }
+
+            if (picker) {
+                print("--color-picker selected. Starting in picker mode...\n");
+                start_picker = true;  // set flag
+                this.activate();
+                return 0;
+            }
+
+            this.activate();
+            return 0;
+        }
         construct {
             Intl.setlocale (LocaleCategory.ALL, "");
             Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
@@ -44,12 +71,26 @@ namespace Colorway {
         public MainWindow get_window () {
             return win;
         }
+        /*
         protected override void activate () {
             if (win != null) {
                 win.present ();
                 return;
             }
             win = new MainWindow (this);
+        }
+            */
+        protected override void activate () {
+            if (win != null) {
+                win.present();
+                if (start_picker)
+                    win.activate_color_picker();
+                return;
+            }
+            win = new MainWindow(this);
+            win.show();
+            if (start_picker)
+                win.activate_color_picker();
         }
 
         private const GLib.OptionEntry[] options = {
@@ -60,8 +101,10 @@ namespace Colorway {
             { null }
         };
         private static bool picker = false;
+        private static bool start_picker = false;
         public static int main (string[] args) {
 
+            /*
             try {
                 var opt_context = new OptionContext ("- OptionContext example");
                 opt_context.set_help_enabled (true);
@@ -78,6 +121,7 @@ namespace Colorway {
 			    print ("Selected colorpicker\n");
 			    return 0;
 		    }
+            */
             var app = new Colorway.Application ();
             return app.run (args);
         }
